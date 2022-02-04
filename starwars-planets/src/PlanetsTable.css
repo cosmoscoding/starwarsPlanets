@@ -4,3 +4,71 @@ td {
   border: 1px solid gray;
   border-collapse: collapse;
 }
+
+th {
+  color: burlywood;
+  padding: 15px;
+}
+
+.textHeader {
+  text-align: left;
+}
+
+.numHeader {
+  text-align: right;
+}
+
+td {
+  color: cornsilk;
+  text-align: left;
+  padding: 15px;
+}
+
+.textData {
+  text-align: left;
+}
+
+.numData {
+  text-align: right;
+}
+
+a {
+  outline: none;
+  text-decoration: none;
+  padding: 2px 1px 0;
+}
+
+a:link {
+  color: lightblue;
+}
+
+a:visited {
+  color: lightblue;
+}
+
+a:focus {
+  border-bottom: 1px solid;
+  background: #bae498;
+}
+
+a:hover {
+  border-bottom: 1px solid;
+  background: darkgreen;
+}
+
+a:active {
+  background: #265301;
+  color: #cdfeaa;
+}
+
+#loadingMessage {
+  background: mediumseagreen;
+  padding: 12px;
+  color: midnightblue;
+}
+
+#errorMessage {
+  background: indianred;
+  padding: 14px;
+  opacity: 0.9;
+}

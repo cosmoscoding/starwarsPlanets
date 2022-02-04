@@ -8,13 +8,24 @@ export type Planet = {
   url: string;
 };
 
+/**
+ * Contains a list of Planet objects, and get/set methods for these objects.
+ */
 class PlanetListModel {
   private planetList: Array<Planet> = [];
 
+  /**
+   * @returns The list of planet objects
+   */
   getPlanets() {
     return this.planetList;
   }
 
+  /**
+   * Formats large numbers (as strings) into groups of 3. i.e. 10000 turns into 10 000
+   * @param numberAsString A number in string format
+   * @returns The number formatted into groups of 3
+   */
   formatNumber(numberAsString: string): string {
     if (numberAsString.length <= 3) {
       return numberAsString;
@@ -33,9 +44,13 @@ class PlanetListModel {
       //Assuming API values are not null.
       let waterSurfaceArea = "?";
       if ("diameter" in planet && planet.diameter !== "unknown") {
-        waterSurfaceArea = Math.round(
-          4 * Math.PI * Math.pow(planet["diameter"] / 2, 2)
-        ).toString();
+        let totalSurfaceArea =
+          4 * Math.PI * Math.pow(planet["diameter"] / 2, 2);
+        if ("surface_water" in planet && planet.surface_water !== "unknown") {
+          waterSurfaceArea = Math.round(
+            (parseInt(planet.surface_water) / 100) * totalSurfaceArea
+          ).toString();
+        }
       }
       let newPlanet: Planet = {
         climate:

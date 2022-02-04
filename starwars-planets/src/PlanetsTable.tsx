@@ -6,6 +6,7 @@ import "./PlanetsTable.css";
 interface TableProps {}
 interface TableState {
   isLoading: boolean;
+  dataError: boolean;
 }
 export default class PlanetsTable extends React.Component<
   TableProps,
@@ -20,10 +21,12 @@ export default class PlanetsTable extends React.Component<
     this.planetsModel = new PlanetListModel();
     this.state = {
       isLoading: false,
+      dataError: false,
     };
   }
 
   componentDidMount() {
+    // Begin the loading message before making API call
     this.setState({
       isLoading: true,
     });
@@ -33,39 +36,59 @@ export default class PlanetsTable extends React.Component<
       dataType: "json",
       success: (data) => {
         if (!("results" in data)) {
+          // Results not included in data set, set error message
           console.log("Planet results not found in data set!");
+          this.setState({
+            dataError: true,
+            isLoading: false,
+          });
           return;
         }
+        // Results found, parse results and display
         this.planetsModel.setPlanets(data.results);
         this.setState({
           isLoading: false,
+          dataError: false,
         });
       },
       error: (XMLHttpRequest, textStatus, errorThrown) => {
-        alert("Error fetching data! Refer to console for details.");
         console.log(`Error fetching data: ${errorThrown}`);
         this.setState({
           isLoading: false,
+          dataError: true,
         });
       },
     });
   }
 
   render() {
+    // This variable stores a user message to display - either "loading" or an error message
+    var userMessage = null;
+    if (this.planetsModel.getPlanets().length === 0) {
+      if (this.state.isLoading)
+        userMessage = <p id="loadingMessage">Loading...</p>;
+      else if (this.state.dataError)
+        userMessage = (
+          <p id="errorMessage">
+            Sorry, we couldn't find any planet data! Please check your API link.
+          </p>
+        );
+      else userMessage = null;
+    }
     return (
       <div>
-        <p>{this.state.isLoading ? "Loading..." : ""}</p>
+        {userMessage}
         {this.planetsModel.getPlanets().length > 0 ? (
           <div>
             <table>
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Climate</th>
-                  <th>Residents</th>
-                  <th>Terrains</th>
-                  <th>Population</th>
-                  <th>
+                  <th className="textHeader">Name</th>
+                  <th className="textHeader">Climate</th>
+                  <th className="numHeader">Residents</th>
+                  <th className="textHeader">Terrains</th>
+                  <th className="numHeader">Population</th>
+                  <th className="numHeader">
                     Water Coverage (in km<sup>2</sup>)
                   </th>
                 </tr>
@@ -73,7 +96,7 @@ export default class PlanetsTable extends React.Component<
               <tbody>
                 {this.planetsModel.getPlanets().map((planet: Planet) => (
                   <tr>
-                    <td>
+                    <td className="textData">
                       {planet.url !== "?" ? (
                         <a
                           href={planet.url}
@@ -86,11 +109,11 @@ export default class PlanetsTable extends React.Component<
                         <p>{planet.name}</p>
                       )}
                     </td>
-                    <td>{planet.climate}</td>
-                    <td>{planet.residents}</td>
-                    <td>{planet.terrain}</td>
-                    <td>{planet.population}</td>
-                    <td>{planet.surfaceWater}</td>
+                    <td className="textData">{planet.climate}</td>
+                    <td className="numData">{planet.residents}</td>
+                    <td className="textData">{planet.terrain}</td>
+                    <td className="numData">{planet.population}</td>
+                    <td className="numData">{planet.surfaceWater}</td>
                   </tr>
                 ))}
               </tbody>

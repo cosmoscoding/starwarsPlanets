@@ -6,7 +6,7 @@ export default class App extends React.Component<{}> {
   render() {
     return (
       <div className="App">
-        <header>Star Wars planets</header>
+        <h1>Star Wars Planets</h1>
         <PlanetsTable />
       </div>
     );
