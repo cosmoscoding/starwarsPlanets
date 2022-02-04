@@ -12,7 +12,7 @@ Running the project
 --
 
 
-This project uses React. To run the project, please run the following inside the **starwars-planets** folder:
+This project uses React. To run the project, please run the following inside the ```starwars-planets``` folder:
 
 - ```npm install``` 
 - ```npm start```
